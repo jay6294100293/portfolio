@@ -28,7 +28,7 @@ class Profile(models.Model):
 class Skill(models.Model):
     name = models.CharField(max_length=100)
     skill_logo = models.ImageField(upload_to='skill_logo/', blank=True, null=True)
-    Percentage = models.IntegerField(default=0)
+    percentage = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     profile = models.ForeignKey(Profile, related_name='skills', on_delete=models.CASCADE)
@@ -52,7 +52,7 @@ class Project(models.Model):
     )
     profile = models.ForeignKey(Profile, related_name='projects', on_delete=models.CASCADE)
     project_link = models.URLField(blank=True, null=True)
-    project_topic = models.CharField(max_length=50, choices=PROJECT_TOPICS, default='active')
+    project_topic = models.CharField(max_length=50, choices=PROJECT_TOPICS, default='Others')
     title = models.CharField(max_length=200)
     description = models.TextField()
     project_pic = models.ImageField(upload_to='project_pics/', blank=True, null=True)
@@ -127,6 +127,3 @@ class Education(models.Model):
 
     def __str__(self):
         return self.degree
-from django.db import models
-
-# Create your models here.

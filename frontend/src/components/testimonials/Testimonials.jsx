@@ -1,6 +1,3 @@
-
-
-
 // src/components/testimonials/Testimonials.js
 import React, { useEffect } from 'react';
 import Slider from 'react-slick';

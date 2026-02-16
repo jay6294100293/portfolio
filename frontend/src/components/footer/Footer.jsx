@@ -1,88 +1,11 @@
-// import React from "react";
-// import "./footer.css";
-//
-// const Footer = () => {
-//   return (
-//     <footer className="footer">
-//       <div className="footer__container container">
-//         <h1 className="footer__title">MG</h1>
-//
-//         <ul className="footer__list">
-//           <li>
-//             <a href="#about" className="footer__link">
-//               About
-//             </a>
-//           </li>
-//
-//           <li>
-//             <a href="#portfolio" className="footer__link">
-//               Projects
-//             </a>
-//           </li>
-//
-//           <li>
-//             <a href="#certifications" className="footer__link">
-//               Certifications
-//             </a>
-//           </li>
-//         </ul>
-//
-//         <div className="footer__social">
-//           <a
-//             href="https://www.facebook.com/"
-//             className="footer__social-link"
-//             target="_blank"
-//           >
-//             <i className="bx bxl-facebook"></i>
-//           </a>
-//
-//           <a
-//             href="https://www.instagram.com/"
-//             className="footer__social-link"
-//             target="_blank"
-//           >
-//             <i className="bx bxl-instagram"></i>
-//           </a>
-//
-//           <a
-//             href="https://twitter.com/"
-//             className="footer__social-link"
-//             target="_blank"
-//           >
-//             <i className="bx bxl-twitter"></i>
-//           </a>
-//         </div>
-//
-//         <span className="footer__copy">
-//           &#169; Mrityunjay Gupta. All rigths reserved
-//         </span>
-//       </div>
-//     </footer>
-//   );
-// };
-//
-// export default Footer;
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./footer.css";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import { useData } from "../../apidata";
 
 const Footer = () => {
-  const [footerData, setFooterData] = useState(null);
-
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        const response = await fetch("https://mrityunjay6294.pythonanywhere.com/portfolio/social/1/");
-        const data = await response.json();
-        setFooterData(data);
-      } catch (error) {
-        console.error("Error fetching footer data:", error);
-      }
-    };
-
-    fetchFooterData();
-  }, []);
+  const { data } = useData();
+  const footerData = data.profile_data;
 
   return (
     <footer className="footer">
@@ -111,7 +34,7 @@ const Footer = () => {
 
         <div className="footer__social">
           <a
-            href={footerData?.linkedin}
+            href={footerData?.linkedin || "#"}
             className="footer__social-link"
             target="_blank"
             rel="noopener noreferrer"
@@ -120,7 +43,7 @@ const Footer = () => {
           </a>
 
           <a
-            href={footerData?.github}
+            href={footerData?.github || "#"}
             className="footer__social-link"
             target="_blank"
             rel="noopener noreferrer"
@@ -129,7 +52,7 @@ const Footer = () => {
           </a>
 
           <a
-            href={"mailto:" + footerData?.email}
+            href={"mailto:" + (footerData?.email || "")}
             className="footer__social-link"
             target="_blank"
             rel="noopener noreferrer"

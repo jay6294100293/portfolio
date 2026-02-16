@@ -1,13 +1,13 @@
-# portfolio/urls.py
-
 from django.urls import path
 
-from portfolios.views.finalview import (SkillListCreateAPIView, SkillRetrieveUpdateDestroyAPIView,
-                    ProjectListCreateAPIView, ProjectRetrieveUpdateDestroyAPIView,
-                    CertificationListCreateAPIView, CertificationRetrieveUpdateDestroyAPIView,
-                    WorkExperienceListCreateAPIView, WorkExperienceRetrieveUpdateDestroyAPIView,
-                    EducationListCreateAPIView, EducationRetrieveUpdateDestroyAPIView,
-                    ProfileListCreateAPIView, ProfileRetrieveUpdateDestroyAPIView)
+from portfolios.views.finalview import (
+    SkillListCreateAPIView, SkillRetrieveUpdateDestroyAPIView,
+    ProjectListCreateAPIView, ProjectRetrieveUpdateDestroyAPIView,
+    CertificationListCreateAPIView, CertificationRetrieveUpdateDestroyAPIView,
+    WorkExperienceListCreateAPIView, WorkExperienceRetrieveUpdateDestroyAPIView,
+    EducationListCreateAPIView, EducationRetrieveUpdateDestroyAPIView,
+    ProfileListCreateAPIView, ProfileRetrieveUpdateDestroyAPIView,
+)
 
 urlpatterns = [
     path('skills/', SkillListCreateAPIView.as_view(), name='skill-list-create'),
@@ -24,9 +24,6 @@ urlpatterns = [
 
     path('educations/', EducationListCreateAPIView.as_view(), name='education-list-create'),
     path('educations/<int:pk>/', EducationRetrieveUpdateDestroyAPIView.as_view(), name='education-detail'),
-
-    # path('about-me/', AboutMeListCreateAPIView.as_view(), name='aboutme-list-create'),
-    # path('about-me/<int:pk>/', AboutMeRetrieveUpdateDestroyAPIView.as_view(), name='aboutme-detail'),
 
     path('profiles/', ProfileListCreateAPIView.as_view(), name='profile-list-create'),
     path('profiles/<int:pk>/', ProfileRetrieveUpdateDestroyAPIView.as_view(), name='profile-detail'),

@@ -1,10 +1,14 @@
 import React from "react";
+import { useData } from "../../apidata";
 
-const Social = ({ linkedinUrl, githubUrl, gmailUrl }) => {
+const Social = () => {
+  const { data } = useData();
+  const profile = data.profile_data;
+
   return (
     <div className="home__social">
       <a
-        href="https://linkedin.com/in/gupta-mrityunjay"
+        href={profile?.linkedin || "#"}
         className="home__social-icon"
         target="_blank"
         rel="noopener noreferrer"
@@ -13,7 +17,7 @@ const Social = ({ linkedinUrl, githubUrl, gmailUrl }) => {
       </a>
 
       <a
-        href="https://github.com/jay6294100293"
+        href={profile?.github || "#"}
         className="home__social-icon"
         target="_blank"
         rel="noopener noreferrer"
@@ -22,7 +26,7 @@ const Social = ({ linkedinUrl, githubUrl, gmailUrl }) => {
       </a>
 
       <a
-        href={"mailto:"+gmailUrl}
+        href={`mailto:${profile?.email || ""}`}
         className="home__social-icon"
         target="_blank"
         rel="noopener noreferrer"

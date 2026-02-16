@@ -1,7 +1,8 @@
-// src/apidata.js
 import React, { createContext, useState, useEffect } from 'react';
 
 const DataContext = createContext();
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/portfolio';
 
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState({
@@ -12,9 +13,9 @@ export const DataProvider = ({ children }) => {
     experience_data: null,
     skills_data: null,
     testimonial_data: null,
-    profile_pic:null
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,16 +28,35 @@ export const DataProvider = ({ children }) => {
           experience_data,
           skills_data,
           testimonial_data,
-          profile_pic
         ] = await Promise.all([
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/accomplishment/1/').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/profiles/1/').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/profiles/1/projects/').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/educations/?profile_id=1').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/work-experiences/?profile_id=1').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/skill-groups/?profile_id=1').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/certifications/?profile_id=1').then(response => response.json()),
-          fetch('https://mrityunjay6294.pythonanywhere.com/portfolio/certifications/?profile_id=1').then(response => response.json()),
+          fetch(`${API_URL}/accomplishment/1/`).then(res => {
+            if (!res.ok) throw new Error(`accomplishment: ${res.status}`);
+            return res.json();
+          }),
+          fetch(`${API_URL}/profiles/1/`).then(res => {
+            if (!res.ok) throw new Error(`profiles: ${res.status}`);
+            return res.json();
+          }),
+          fetch(`${API_URL}/profiles/1/projects/`).then(res => {
+            if (!res.ok) throw new Error(`projects: ${res.status}`);
+            return res.json();
+          }),
+          fetch(`${API_URL}/educations/?profile_id=1`).then(res => {
+            if (!res.ok) throw new Error(`educations: ${res.status}`);
+            return res.json();
+          }),
+          fetch(`${API_URL}/work-experiences/?profile_id=1`).then(res => {
+            if (!res.ok) throw new Error(`work-experiences: ${res.status}`);
+            return res.json();
+          }),
+          fetch(`${API_URL}/skill-groups/?profile_id=1`).then(res => {
+            if (!res.ok) throw new Error(`skill-groups: ${res.status}`);
+            return res.json();
+          }),
+          fetch(`${API_URL}/certifications/?profile_id=1`).then(res => {
+            if (!res.ok) throw new Error(`certifications: ${res.status}`);
+            return res.json();
+          }),
         ]);
 
         setData({
@@ -48,9 +68,10 @@ export const DataProvider = ({ children }) => {
           skills_data,
           testimonial_data,
         });
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError(err);
+      } finally {
         setLoading(false);
       }
     };
@@ -59,7 +80,7 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   return (
-    <DataContext.Provider value={{ data, loading }}>
+    <DataContext.Provider value={{ data, loading, error }}>
       {children}
     </DataContext.Provider>
   );
