@@ -1,0 +1,41 @@
+/* custom.css */
+
+@media screen and (max-width: 576px) {
+  /* Reduce size of testimonial card */
+  .testimonial__card {
+    max-width: 300px; /* Adjust as needed */
+  }
+
+  /* Reduce size of testimonial image */
+  .testimonial__img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px; /* Adjust margin as needed */
+  }
+
+  /* Reduce font size of testimonial title */
+  .testimonial__title {
+    font-size: 1rem; /* Adjust as needed */
+  }
+
+  /* Reduce font size of testimonial date */
+  .testimonial__date {
+    font-size: 0.8rem; /* Adjust as needed */
+  }
+
+  /* Reduce font size of testimonial skills */
+  .testimonial__skills {
+    font-size: small; /* Adjust as needed */
+  }
+
+  /* Reduce font size of testimonial link */
+  .testimonial__link {
+    font-size: small; /* Adjust as needed */
+  }
+
+  /* Adjust spacing for testimonial link container */
+  .testimonial__link-container {
+    font-size: x-small; /* Adjust as needed */
+    margin-bottom: 5px; /* Adjust as needed */
+  }
+}

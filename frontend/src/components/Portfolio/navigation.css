@@ -1,0 +1,15 @@
+/* custom.css */
+
+.work__filters {
+  display: flex;
+  justify-content: center; /* Center the items horizontally */
+  align-items: center; /* Center the items vertically */
+  flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+  gap: 1rem; /* Adjust the gap between items */
+}
+
+.work__filters .work__item {
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Add any other custom styles here */
