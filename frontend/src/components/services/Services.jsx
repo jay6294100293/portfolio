@@ -1,27 +1,33 @@
 import React, { useState } from "react";
-import { useData } from "../../apidata"; // Import the useData hook
+import { useData } from "../../apidata";
 import "./services.css";
 
+const sanitizeText = (html) => {
+  if (!html) return '';
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
+};
+
 const Services = () => {
-  const { data, loading } = useData(); // Access data and loading state from the context
+  const { data } = useData();
   const [toggleState, setToggleState] = useState(null);
 
   const toggleTab = (index) => {
     setToggleState(index);
   };
 
-  // Function to format date as "YYYY MMM"
   const formatDate = (dateString) => {
+    if (!dateString) return 'Present';
     const options = { year: "numeric", month: "short" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
-  const services = data.experience_data || []; // Fallback to an empty array if no services data is available
+  const services = data.experience_data || [];
 
   return (
-    <section className="services section" id="services">
+    <section className="services section" id="experience">
       <h2 className="section__title">Experience</h2>
-      <span className="section__subtitle">click view more for more information</span>
+      <span className="section__subtitle">Click view more for details</span>
 
       <div className="services__container container grid">
         {services.map((service, index) => (
@@ -60,12 +66,9 @@ const Services = () => {
                 ></i>
 
                 <h3 className="services__modal-title">{service.title}</h3>
-                <p
-                  className="services__modal-description"
-                  dangerouslySetInnerHTML={{ __html: service.responsibilities }}
-                ></p>
-
-                {/* You can render other details dynamically here */}
+                <p className="services__modal-description">
+                  {sanitizeText(service.responsibilities)}
+                </p>
               </div>
             </div>
           </div>

@@ -1,30 +1,33 @@
 from django.urls import path
 
 from portfolios.views.finalview import (
-    SkillListCreateAPIView, SkillRetrieveUpdateDestroyAPIView,
-    ProjectListCreateAPIView, ProjectRetrieveUpdateDestroyAPIView,
-    CertificationListCreateAPIView, CertificationRetrieveUpdateDestroyAPIView,
-    WorkExperienceListCreateAPIView, WorkExperienceRetrieveUpdateDestroyAPIView,
-    EducationListCreateAPIView, EducationRetrieveUpdateDestroyAPIView,
-    ProfileListCreateAPIView, ProfileRetrieveUpdateDestroyAPIView,
+    ProfileListAPIView, ProfileDetailAPIView,
+    SkillListAPIView, SkillGroupListAPIView,
+    ProjectListAPIView, ProfileProjectListAPIView,
+    CertificationListAPIView,
+    WorkExperienceListAPIView,
+    EducationListAPIView,
+    AccomplishmentDetailAPIView,
+    FeedbackCreateAPIView,
 )
 
 urlpatterns = [
-    path('skills/', SkillListCreateAPIView.as_view(), name='skill-list-create'),
-    path('skills/<int:pk>/', SkillRetrieveUpdateDestroyAPIView.as_view(), name='skill-detail'),
+    # Profiles
+    path('profiles/', ProfileListAPIView.as_view(), name='profile-list'),
+    path('profiles/<int:pk>/', ProfileDetailAPIView.as_view(), name='profile-detail'),
 
-    path('projects/', ProjectListCreateAPIView.as_view(), name='project-list-create'),
-    path('projects/<int:pk>/', ProjectRetrieveUpdateDestroyAPIView.as_view(), name='project-detail'),
+    # Profile-scoped nested endpoints (used by frontend)
+    path('profiles/<int:profile_id>/projects/', ProfileProjectListAPIView.as_view(), name='profile-project-list'),
+    path('profiles/<int:profile_id>/feedbacks/', FeedbackCreateAPIView.as_view(), name='profile-feedback-create'),
 
-    path('certifications/', CertificationListCreateAPIView.as_view(), name='certification-list-create'),
-    path('certifications/<int:pk>/', CertificationRetrieveUpdateDestroyAPIView.as_view(), name='certification-detail'),
+    # Flat list endpoints with ?profile_id= filtering
+    path('skills/', SkillListAPIView.as_view(), name='skill-list'),
+    path('skill-groups/', SkillGroupListAPIView.as_view(), name='skill-group-list'),
+    path('projects/', ProjectListAPIView.as_view(), name='project-list'),
+    path('certifications/', CertificationListAPIView.as_view(), name='certification-list'),
+    path('work-experiences/', WorkExperienceListAPIView.as_view(), name='workexperience-list'),
+    path('educations/', EducationListAPIView.as_view(), name='education-list'),
 
-    path('work-experiences/', WorkExperienceListCreateAPIView.as_view(), name='workexperience-list-create'),
-    path('work-experiences/<int:pk>/', WorkExperienceRetrieveUpdateDestroyAPIView.as_view(), name='workexperience-detail'),
-
-    path('educations/', EducationListCreateAPIView.as_view(), name='education-list-create'),
-    path('educations/<int:pk>/', EducationRetrieveUpdateDestroyAPIView.as_view(), name='education-detail'),
-
-    path('profiles/', ProfileListCreateAPIView.as_view(), name='profile-list-create'),
-    path('profiles/<int:pk>/', ProfileRetrieveUpdateDestroyAPIView.as_view(), name='profile-detail'),
+    # Accomplishment (detail by pk)
+    path('accomplishment/<int:pk>/', AccomplishmentDetailAPIView.as_view(), name='accomplishment-detail'),
 ]

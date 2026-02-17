@@ -6,5 +6,8 @@ from portfolios.models import Education
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Education
-        fields = '__all__'
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        fields = [
+            'id', 'profile', 'degree', 'degree_city', 'university_logo',
+            'degree_pic', 'institution', 'completion_date', 'status',
+        ]
+        read_only_fields = ['id']

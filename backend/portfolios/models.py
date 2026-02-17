@@ -13,6 +13,8 @@ class Profile(models.Model):
     email = models.EmailField()
     linkedin = models.URLField(blank=True, null=True)
     github = models.URLField(blank=True, null=True)
+    about_me = models.TextField(blank=True, null=True)
+    about_me_intro = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     STATUS_CHOICES = (
@@ -42,6 +44,37 @@ class Skill(models.Model):
         return self.name
 
 
+class SkillGroup(models.Model):
+    name = models.CharField(max_length=100)
+    profile = models.ForeignKey(Profile, related_name='skill_groups', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    STATUS_CHOICES = (
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
+
+    def __str__(self):
+        return self.name
+
+
+class SkillItem(models.Model):
+    LEVEL_CHOICES = (
+        ('Basic', 'Basic'),
+        ('Intermediate', 'Intermediate'),
+        ('Advance', 'Advance'),
+    )
+    name = models.CharField(max_length=100)
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='Basic')
+    group = models.ForeignKey(SkillGroup, related_name='names', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name} ({self.level})'
+
+
 class Project(models.Model):
     PROJECT_TOPICS = (
         ('Machine Learning', 'Machine Learning'),
@@ -52,9 +85,11 @@ class Project(models.Model):
     )
     profile = models.ForeignKey(Profile, related_name='projects', on_delete=models.CASCADE)
     project_link = models.URLField(blank=True, null=True)
+    github_link = models.URLField(blank=True, null=True)
     project_topic = models.CharField(max_length=50, choices=PROJECT_TOPICS, default='Others')
     title = models.CharField(max_length=200)
     description = models.TextField()
+    short_description = models.TextField(blank=True, null=True)
     project_pic = models.ImageField(upload_to='project_pics/', blank=True, null=True)
     tech_stack = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -77,6 +112,7 @@ class Certification(models.Model):
     provider = models.CharField(max_length=200)
     date_completed = models.DateField()
     certification_link = models.URLField(blank=True, null=True)
+    skills = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     STATUS_CHOICES = (
@@ -127,3 +163,26 @@ class Education(models.Model):
 
     def __str__(self):
         return self.degree
+
+
+class Accomplishment(models.Model):
+    profile = models.ForeignKey(Profile, related_name='accomplishments', on_delete=models.CASCADE)
+    years_experience = models.IntegerField(default=0)
+    months_experience = models.IntegerField(default=0)
+    projects_completed = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'Accomplishments for {self.profile}'
+
+
+class Feedback(models.Model):
+    profile = models.ForeignKey(Profile, related_name='feedbacks', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Feedback from {self.name}'

@@ -1,16 +1,25 @@
 import React, { useState } from "react";
-import { useData } from "../../apidata"; // Import the useData hook
+import { useData } from "../../apidata";
 import "./qualification.css";
 
 const Qualification = () => {
-  const { data, loading } = useData(); // Access data and loading state from the context
+  const { data } = useData();
   const [toggleState, setToggleState] = useState(1);
 
   const toggleTab = (index) => {
     setToggleState(index);
   };
 
-  const qualifications = data.education_data || []; // Fallback to an empty array if no qualifications data is available
+  const qualifications = data.education_data || [];
+  const experiences = data.experience_data || [];
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Present';
+    return new Date(dateString).toLocaleString('default', {
+      year: 'numeric',
+      month: 'short',
+    });
+  };
 
   return (
     <section className="qualification section" id="qualification">
@@ -52,27 +61,15 @@ const Qualification = () => {
                 : "qualification__content"
             }
           >
-            {qualifications.map((qualification) => (
+            {qualifications.map((qualification, index) => (
               <div className="qualification__data" key={qualification.id}>
-                {qualification.id % 2 === 0 ? (
+                {index % 2 === 0 ? (
                   <>
-                    <div className="qualification__right">
-                      {/* Your content for the right side */}
-                    </div>
-
-                    <div>
-                      <span className="qualification__rounder"></span>
-                      <span className="qualification__line"></span>
-                    </div>
-
                     <div className="qualification__left">
                       <div>
                         <h3 className="qualification__title">{qualification.degree}</h3>
                         <div className="qualification__calender">
-                          <i className="uil uil-calendar-alt"></i> {new Date(qualification.completion_date).toLocaleString('default', {
-                            year: 'numeric',
-                            month: 'short'
-                          })}
+                          <i className="uil uil-calendar-alt"></i> {formatDate(qualification.completion_date)}
                         </div>
                         <span className="qualification__subtitle">
                           <h6>{qualification.institution}</h6>
@@ -80,30 +77,30 @@ const Qualification = () => {
                         </span>
                       </div>
                     </div>
+                    <div>
+                      <span className="qualification__rounder"></span>
+                      <span className="qualification__line"></span>
+                    </div>
+                    <div className="qualification__right"></div>
                   </>
                 ) : (
                   <>
+                    <div className="qualification__right"></div>
+                    <div>
+                      <span className="qualification__rounder"></span>
+                      <span className="qualification__line"></span>
+                    </div>
                     <div className="qualification__left">
                       <div>
                         <h3 className="qualification__title">{qualification.degree}</h3>
                         <div className="qualification__calender">
-                          <i className="uil uil-calendar-alt"></i> {new Date(qualification.completion_date).toLocaleString('default', {
-                            year: 'numeric',
-                            month: 'short'
-                          })}
+                          <i className="uil uil-calendar-alt"></i> {formatDate(qualification.completion_date)}
                         </div>
                         <span className="qualification__subtitle">
                           <h6>{qualification.institution}</h6>
                           <p>{qualification.degree_city}</p>
                         </span>
                       </div>
-                    </div>
-                    <div>
-                      <span className="qualification__rounder"></span>
-                      <span className="qualification__line"></span>
-                    </div>
-                    <div className="qualification__right">
-                      {/* Your content for the right side */}
                     </div>
                   </>
                 )}
@@ -118,7 +115,51 @@ const Qualification = () => {
                 : "qualification__content"
             }
           >
-            {/* Experience content goes here */}
+            {experiences.map((experience, index) => (
+              <div className="qualification__data" key={experience.id}>
+                {index % 2 === 0 ? (
+                  <>
+                    <div className="qualification__left">
+                      <div>
+                        <h3 className="qualification__title">{experience.title}</h3>
+                        <div className="qualification__calender">
+                          <i className="uil uil-calendar-alt"></i>{' '}
+                          {formatDate(experience.start_date)} - {formatDate(experience.end_date)}
+                        </div>
+                        <span className="qualification__subtitle">
+                          <h6>{experience.company}</h6>
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="qualification__rounder"></span>
+                      <span className="qualification__line"></span>
+                    </div>
+                    <div className="qualification__right"></div>
+                  </>
+                ) : (
+                  <>
+                    <div className="qualification__right"></div>
+                    <div>
+                      <span className="qualification__rounder"></span>
+                      <span className="qualification__line"></span>
+                    </div>
+                    <div className="qualification__left">
+                      <div>
+                        <h3 className="qualification__title">{experience.title}</h3>
+                        <div className="qualification__calender">
+                          <i className="uil uil-calendar-alt"></i>{' '}
+                          {formatDate(experience.start_date)} - {formatDate(experience.end_date)}
+                        </div>
+                        <span className="qualification__subtitle">
+                          <h6>{experience.company}</h6>
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

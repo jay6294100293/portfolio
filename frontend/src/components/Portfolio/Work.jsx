@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useData } from "../../apidata"; // Import the useData hook
+import React, { useState } from "react";
+import { useData } from "../../apidata";
 import "./work.css";
 import "./navigation.css";
 
 const Projects = () => {
-  const { data, loading } = useData(); // Access data and loading state from the context
+  const { data } = useData();
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const projects = data.project_data || []; // Fallback to an empty array if no projects data is available

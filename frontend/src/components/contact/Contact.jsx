@@ -28,10 +28,16 @@ const Contact = () => {
     if (!validate()) return;
 
     const formData = new FormData(form.current);
+    const jsonBody = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+    };
 
     fetch(`${API_URL}/profiles/1/feedbacks/`, {
       method: "POST",
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(jsonBody),
     })
       .then(response => response.json())
       .then(() => {

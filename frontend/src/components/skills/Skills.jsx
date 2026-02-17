@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useData } from "../../apidata"; // Import the useData hook
+import React from "react";
+import { useData } from "../../apidata";
 import "./skills.css";
 
 const Skills = () => {
-  const { data, loading } = useData(); // Access data and loading state from the context
-  const skillsData = data.skills_data || []; // Fallback to an empty array if no skills data is available
+  const { data } = useData();
+  const skillsData = data.skills_data || [];
 
   const renderSkills = () => {
     return skillsData.map((skill, index) => (

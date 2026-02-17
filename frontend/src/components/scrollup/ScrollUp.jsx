@@ -13,9 +13,9 @@ const ScrollUp = () => {
   }, []);
 
   return (
-    <a href="#" className={`scrollup${showScroll ? " show-scroll" : ""}`}>
+    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={`scrollup${showScroll ? " show-scroll" : ""}`}>
       <i className="uil uil-arrow-up scrollup__icon"></i>
-    </a>
+    </button>
   );
 };
 

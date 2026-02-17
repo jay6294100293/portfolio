@@ -1,14 +1,19 @@
-// src/components/testimonials/Testimonials.js
 import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './testimonial.css';
 import './testimonial_support.css';
-import { useData } from '../../apidata'; // Correctly import the useData hook
+import { useData } from '../../apidata';
+
+const sanitizeText = (html) => {
+  if (!html) return '';
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
+};
 
 const Testimonials = () => {
-  const { data, loading } = useData(); // Access data and loading state from the context
+  const { data, loading } = useData();
 
   useEffect(() => {
     const calculateMaxHeight = () => {
@@ -22,7 +27,6 @@ const Testimonials = () => {
       });
     };
 
-    // Call the function initially and on testimonials change
     if (!loading) {
       calculateMaxHeight();
       window.addEventListener('resize', calculateMaxHeight);
@@ -32,10 +36,10 @@ const Testimonials = () => {
   }, [loading, data.testimonial_data]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading indicator while data is being fetched
+    return <div>Loading...</div>;
   }
 
-  const testimonials = data.testimonial_data; // Destructure testimonials data from context
+  const testimonials = data.testimonial_data || [];
 
   const settings = {
     dots: true,
@@ -72,7 +76,7 @@ const Testimonials = () => {
 
   return (
     <section className="testimonial container section" id="certifications">
-      <h2 className="section__title">Certification and Badges</h2>
+      <h2 className="section__title">Certifications and Badges</h2>
       <span className="section__subtitle"></span>
 
       <Slider {...settings}>
@@ -80,7 +84,7 @@ const Testimonials = () => {
           <div className="testimonial__card" key={index}>
             <div className="testimonial__content">
               <div className="testimonial__img-container">
-                <img className="testimonial__img" src={testimonial.certificate_icon_pic} alt="Certificate Icon" />
+                <img className="testimonial__img" src={testimonial.certificate_icon_pic} alt={testimonial.title} />
               </div>
               <div className="testimonial__text">
                 <h3 className="testimonial__title">{testimonial.title}</h3>
@@ -91,7 +95,7 @@ const Testimonials = () => {
               <div className="skill_tag">
                 <p>Skills:</p>
               </div>
-              <p className="testimonial__skills" dangerouslySetInnerHTML={{ __html: testimonial.skills }}></p>
+              <p className="testimonial__skills">{sanitizeText(testimonial.skills)}</p>
             </div>
             <div className="testimonial__link-container">
               <a href={testimonial.certification_link} className="testimonial__link" target="_blank" rel="noopener noreferrer">View Certification</a>

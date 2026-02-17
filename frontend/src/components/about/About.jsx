@@ -1,12 +1,11 @@
 import React from "react";
 import "./about.css";
 import Info from "./Info";
-import { useData } from "../../apidata"; // Import the useData hook
+import { useData } from "../../apidata";
 
 const About = () => {
-  const { data, loading } = useData(); // Access data and loading state from the context
-
-  const userData = data.profile_data; // Destructure user data from context
+  const { data } = useData();
+  const userData = data.profile_data;
 
   return (
     <section className="about section" id="about">
