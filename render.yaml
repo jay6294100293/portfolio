@@ -23,10 +23,7 @@ services:
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
       - key: CORS_ALLOWED_ORIGINS
-        fromService:
-          name: portfolio-frontend
-          type: static_site
-          property: url
+        sync: false
       - key: DATABASE_URL
         fromDatabase:
           name: portfolio-db
@@ -42,11 +39,7 @@ services:
     staticPublishPath: build
     envVars:
       - key: REACT_APP_API_URL
-        fromService:
-          name: portfolio-backend
-          type: web
-          property: url
-        prefix: "/portfolio"
+        sync: false
     routes:
       - type: rewrite
         source: /*
