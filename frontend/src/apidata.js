@@ -4,11 +4,15 @@ const DataContext = createContext();
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/portfolio';
 
-const fetchJson = async (url) => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${url}: ${res.status}`);
-  const json = await res.json();
-  return json.results !== undefined ? json.results : json;
+const fetchJson = async (url, fallback = null) => {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return fallback;
+    const json = await res.json();
+    return json.results !== undefined ? json.results : json;
+  } catch {
+    return fallback;
+  }
 };
 
 export const DataProvider = ({ children }) => {
@@ -36,13 +40,13 @@ export const DataProvider = ({ children }) => {
           skills_data,
           testimonial_data,
         ] = await Promise.all([
-          fetchJson(`${API_URL}/accomplishment/1/`),
-          fetchJson(`${API_URL}/profiles/1/`),
-          fetchJson(`${API_URL}/profiles/1/projects/`),
-          fetchJson(`${API_URL}/educations/?profile_id=1`),
-          fetchJson(`${API_URL}/work-experiences/?profile_id=1`),
-          fetchJson(`${API_URL}/skill-groups/?profile_id=1`),
-          fetchJson(`${API_URL}/certifications/?profile_id=1`),
+          fetchJson(`${API_URL}/accomplishment/1/`, {}),
+          fetchJson(`${API_URL}/profiles/1/`, {}),
+          fetchJson(`${API_URL}/profiles/1/projects/`, []),
+          fetchJson(`${API_URL}/educations/?profile_id=1`, []),
+          fetchJson(`${API_URL}/work-experiences/?profile_id=1`, []),
+          fetchJson(`${API_URL}/skill-groups/?profile_id=1`, []),
+          fetchJson(`${API_URL}/certifications/?profile_id=1`, []),
         ]);
 
         setData({
